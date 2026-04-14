@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Chapitre {
+  id                  String   @id @default(cuid())
+  numero              Int      @unique
+  titre               String
+  description         String?
+  rappelCours         String?  @db.Text
+  rappelCoursFileUrl  String?
+  rappelCoursFileName String?
+  fileUrl             String?
+  fileName            String?
+  sommaire            Json?
+  pages               Page[]
+  videoUrl            String?
+  conclusion          String?  @db.Text
+  conclusionFileUrl   String?
+  conclusionFileName  String?
+  ficheResume         String?  @db.Text
+  ficheResumeFileUrl  String?
+  ficheResumeFileName String?
+  tests               Test[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Page {
+  id         String   @id @default(cuid())
+  chapitreId String
+  chapitre   Chapitre @relation(fields: [chapitreId], references: [id], onDelete: Cascade)
+  numero     Int
+  titre      String
+  contenu    String   @db.Text
+
+  @@index([chapitreId])
+}
+
+model Test {
+  id          String     @id @default(cuid())
+  chapitreId  String
+  chapitre    Chapitre   @relation(fields: [chapitreId], references: [id], onDelete: Cascade)
+  titre       String
+  type        TestType
+  dansLeCours Boolean    @default(false)
+  questions   Question[]
+  createdAt   DateTime   @default(now())
+
+  @@index([chapitreId])
+}
+
+enum TestType {
+  QCM
+  CAS_CLINIQUE
+  VRAI_FAUX
+}
+
+model Question {
+  id       String  @id @default(cuid())
+  testId   String
+  test     Test    @relation(fields: [testId], references: [id], onDelete: Cascade)
+  ordre    Int
+  enonce   String  @db.Text
+  contexte String? @db.Text
+  options  Json
+
+  @@index([testId])
+}
+
+model TestResult {
+  id            String   @id @default(cuid())
+  clerkUserId   String
+  testId        String
+  chapitreId    String
+  score         Int
+  totalQuestions Int
+  percentage    Float
+  answers       Json
+  attemptNumber Int
+  completedAt   DateTime @default(now())
+
+  @@unique([clerkUserId, testId, attemptNumber])
+  @@index([clerkUserId])
+  @@index([testId])
+  @@index([chapitreId])
+}
+
+model CourseProgress {
+  id          String    @id @default(cuid())
+  clerkUserId String
+  chapitreId  String
+  startedAt   DateTime  @default(now())
+  lastAccessedAt DateTime @default(now())
+  completed   Boolean   @default(false)
+
+  @@unique([clerkUserId, chapitreId])
+  @@index([clerkUserId])
+}
