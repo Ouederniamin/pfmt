@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className="h-7 w-7 object-contain"
             />
             <span className="font-serif text-sm font-bold text-primary">
-              FMT Médecine
+              Faculté de Médecine de Tunis
             </span>
           </header>
 

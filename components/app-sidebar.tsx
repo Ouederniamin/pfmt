@@ -332,7 +332,7 @@ function SidebarUserCard({ collapsed }: { collapsed?: boolean }) {
       <div className="flex items-center gap-3">
         <UserButton appearance={{ elements: { avatarBox: "h-8 w-8" } }} />
         <div className="text-xs">
-          <p className="font-semibold text-foreground">FMT Médecine</p>
+          <p className="font-semibold text-foreground">Faculté de Médecine de Tunis</p>
           <p className="text-text-muted">Faculté de Médecine de Tunis</p>
         </div>
       </div>
@@ -363,10 +363,10 @@ function MobileSidebarContent({ onNavigate }: { onNavigate: () => void }) {
         )}
         <div>
           <p className="font-serif text-base font-bold text-primary">
-            {isAdminMode ? "Administration" : "FMT Médecine"}
+            {isAdminMode ? "Administration" : "Faculté de Médecine de Tunis"}
           </p>
           <p className="text-[11px] font-medium text-text-muted">
-            {isAdminMode ? "Panneau de gestion" : "Fac. Médecine de Tunis"}
+            {isAdminMode ? "Panneau de gestion" : "Plateforme pédagogique"}
           </p>
         </div>
       </div>
@@ -428,10 +428,10 @@ export function AppSidebar() {
         {!collapsed && (
           <div className="overflow-hidden">
             <p className="font-serif text-base font-bold tracking-tight text-primary">
-              {isAdminMode ? "Administration" : "FMT Médecine"}
+              {isAdminMode ? "Administration" : "Faculté de Médecine de Tunis"}
             </p>
             <p className="text-[11px] font-medium text-text-muted">
-              {isAdminMode ? "Panneau de gestion" : "Fac. Médecine de Tunis"}
+              {isAdminMode ? "Panneau de gestion" : "Plateforme pédagogique"}
             </p>
           </div>
         )}

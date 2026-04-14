@@ -83,7 +83,7 @@ export default async function Home() {
               className="h-10 w-10 object-contain"
             />
             <span className="font-serif text-lg font-bold tracking-tight text-primary">
-              FMT Médecine
+              Faculté de Médecine de Tunis
             </span>
           </Link>
           <div className="flex items-center gap-3">
@@ -408,7 +408,7 @@ export default async function Home() {
                 className="h-8 w-8 object-contain"
               />
               <span className="font-serif text-sm font-bold text-primary">
-                FMT Médecine
+                Faculté de Médecine de Tunis
               </span>
             </div>
             <p className="text-center text-sm text-text-muted">
