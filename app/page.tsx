@@ -79,7 +79,7 @@ export default async function Home() {
               <Stethoscope className="h-5 w-5" />
             </div>
             <span className="font-serif text-lg font-bold tracking-tight text-primary">
-              OncoLearn FMT
+              FMT Médecine
             </span>
           </Link>
           <div className="flex items-center gap-3">
@@ -138,8 +138,8 @@ export default async function Home() {
 
             {/* Headline */}
             <h1 className="animate-fade-up delay-100 mt-8 font-serif text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl">
-              Oncologie Gynécologique
-              <span className="block text-accent-gold">&amp; Mammaire</span>
+              Plateforme
+              <span className="block text-accent-gold">Pédagogique</span>
             </h1>
 
             {/* Subtitle */}
@@ -327,7 +327,7 @@ export default async function Home() {
                 {
                   step: "01",
                   title: "Choisissez un chapitre",
-                  desc: "Parcourez les chapitres couvrant l'oncologie gynécologique et mammaire — FMT.",
+                  desc: "Parcourez les chapitres de la Faculté de Médecine de Tunis.",
                   icon: BookOpen,
                 },
                 {
@@ -379,7 +379,7 @@ export default async function Home() {
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-base text-white/60">
             Accédez dès maintenant aux cours, fiches et tests interactifs
-            d’oncologie gynécologique et mammaire — FMT.
+            d'études médicales — Faculté de Médecine de Tunis.
           </p>
           <Link
             href="/cours"
@@ -400,11 +400,11 @@ export default async function Home() {
                 <Stethoscope className="h-4 w-4" />
               </div>
               <span className="font-serif text-sm font-bold text-primary">
-                OncoLearn FMT
+                FMT Médecine
               </span>
             </div>
             <p className="text-center text-sm text-text-muted">
-              Faculté de Médecine de Tunis — Oncologie Gyn. & Mammaire
+              Faculté de Médecine de Tunis
             </p>
             <div className="flex gap-4">
               <Link
@@ -428,7 +428,7 @@ export default async function Home() {
               <span className="text-xs text-accent-gold">◆</span>
             </div>
             <p className="text-xs text-text-muted/60">
-              © {new Date().getFullYear()} OncoLearn FMT. Projet
+              © {new Date().getFullYear()} Faculté de Médecine de Tunis. Projet
               pédagogique.
             </p>
           </div>

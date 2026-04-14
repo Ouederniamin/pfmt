@@ -72,9 +72,9 @@ export default async function CoursListPage() {
           Chapitres disponibles
         </h1>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-text-muted">
-          Parcourez les chapitres d&rsquo;oncologie gynécologique et mammaire.
+          Parcourez les chapitres disponibles.
           Chaque chapitre contient un cours, des fiches de révision
-          et des QCM interactifs — FMT.
+          et des QCM interactifs — Faculté de Médecine de Tunis.
         </p>
       </div>
 

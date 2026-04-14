@@ -114,7 +114,7 @@ export default async function AdminDashboardPage() {
           Administration
         </h1>
         <p className="mt-2 text-sm text-text-muted">
-          Vue d&apos;ensemble de la plateforme OncoLearn FMT.
+          Vue d&apos;ensemble de la plateforme — Faculté de Médecine de Tunis.
         </p>
       </div>
 

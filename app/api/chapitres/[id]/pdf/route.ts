@@ -133,7 +133,7 @@ function buildHtml(titre: string, description: string | null, pages: { titre: st
   <div class="title-page">
     <h1>${titre}</h1>
     ${description ? `<p class="desc">${description}</p>` : ""}
-    <p class="badge">Plateforme Oncologie — Gynécologie & Sein</p>
+    <p class="badge">Faculté de Médecine de Tunis — Plateforme Pédagogique</p>
   </div>
   <div class="page-break"></div>
   ${pagesSections}

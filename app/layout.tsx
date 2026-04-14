@@ -17,9 +17,9 @@ const sans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "OncoLearn FMT — Faculté de Médecine de Tunis",
+  title: "Faculté de Médecine de Tunis — Plateforme Pédagogique",
   description:
-    "Plateforme pédagogique en oncologie gynécologique et mammaire — Faculté de Médecine de Tunis.",
+    "Plateforme pédagogique de la Faculté de Médecine de Tunis. Cours structurés, tests interactifs et fiches de révision.",
 };
 
 export default function RootLayout({
