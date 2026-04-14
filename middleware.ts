@@ -9,6 +9,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/chapitres",
   "/api/chapitres/(.*)",
   "/api/tests/(.*)",
+  "/api/uploadthing(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
