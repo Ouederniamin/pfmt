@@ -677,10 +677,7 @@ function ResultsScreen({
           <ScoreGauge percentage={results.percentage} />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="font-serif text-4xl font-black tracking-tight text-foreground">
-              {animatedPct}
-            </span>
-            <span className="text-xs font-bold uppercase tracking-widest text-text-muted">
-              pour cent
+              {animatedPct}<span className="text-lg">%</span>
             </span>
           </div>
         </div>
