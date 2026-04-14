@@ -104,8 +104,7 @@ export function CoursReader({
   const [activeTestId, setActiveTestId] = useState<string | null>(null);
   const [testResults, setTestResults] = useState<Record<string, { correct: number; total: number }>>({});
 
-  /* ─── Previous results from DB (attempt counts, best scores) ─── */
-  const [attemptCounts, setAttemptCounts] = useState<Record<string, number>>({});
+  /* ─── Previous results from DB (best scores) ─── */
   const [bestScores, setBestScores] = useState<Record<string, { correct: number; total: number; percentage: number }>>({});
 
   // Load previous results on mount (only when authenticated)
@@ -114,15 +113,12 @@ export function CoursReader({
     fetch(`/api/test-results?chapitreId=${chapitreId}`)
       .then((res) => res.json())
       .then((data) => {
-        const counts: Record<string, number> = {};
         const bests: Record<string, { correct: number; total: number; percentage: number }> = {};
         for (const r of data.results || []) {
-          counts[r.testId] = (counts[r.testId] || 0) + 1;
           if (!bests[r.testId] || r.percentage > bests[r.testId].percentage) {
             bests[r.testId] = { correct: r.score, total: r.totalQuestions, percentage: r.percentage };
           }
         }
-        setAttemptCounts(counts);
         setBestScores(bests);
         // Pre-fill testResults with best scores so test hub shows them
         const prefilled: Record<string, { correct: number; total: number }> = {};
@@ -150,8 +146,6 @@ export function CoursReader({
 
   const handleTestComplete = (testId: string, correct: number, total: number) => {
     setTestResults((prev) => ({ ...prev, [testId]: { correct, total } }));
-    // Update attempt count after test completion
-    setAttemptCounts((prev) => ({ ...prev, [testId]: (prev[testId] || 0) + 1 }));
     setActiveTestId(null);
   };
 
@@ -247,7 +241,6 @@ export function CoursReader({
             chapitreId={chapitreId}
             type={test.type}
             questions={test.questions}
-            attemptsUsed={attemptCounts[test.id] || 0}
             onComplete={(correct, total) => handleTestComplete(test.id, correct, total)}
           />
         </div>

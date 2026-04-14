@@ -43,12 +43,10 @@ type TestPlayerProps = {
   chapitreId: string;
   type: "QCM" | "CAS_CLINIQUE" | "VRAI_FAUX";
   questions: Question[];
-  attemptsUsed?: number;
-  maxAttempts?: number;
   onComplete?: (correct: number, total: number) => void;
 };
 
-export function TestPlayer({ testId, chapitreId, type, questions, attemptsUsed = 0, maxAttempts = 3, onComplete }: TestPlayerProps) {
+export function TestPlayer({ testId, chapitreId, type, questions, onComplete }: TestPlayerProps) {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, Set<string>>>({});
   // Track which questions have been validated
@@ -57,8 +55,6 @@ export function TestPlayer({ testId, chapitreId, type, questions, attemptsUsed =
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState(false);
-  const [attemptsLeft, setAttemptsLeft] = useState(maxAttempts - attemptsUsed);
-  const [maxReached, setMaxReached] = useState(attemptsUsed >= maxAttempts);
 
   // Gamification state
   const [runningXP, setRunningXP] = useState(0);
@@ -152,13 +148,7 @@ export function TestPlayer({ testId, chapitreId, type, questions, attemptsUsed =
         }),
       });
       if (res.ok) {
-        const data = await res.json();
         setSaved(true);
-        setAttemptsLeft(data.attemptsLeft);
-        if (data.attemptsLeft <= 0) setMaxReached(true);
-      } else {
-        const data = await res.json();
-        if (data.maxReached) setMaxReached(true);
       }
     } catch {
       setSaveError(true);
@@ -168,7 +158,6 @@ export function TestPlayer({ testId, chapitreId, type, questions, attemptsUsed =
   };
 
   const reset = () => {
-    if (maxReached) return;
     setAnswers({});
     setValidated(new Set());
     setIndex(0);
@@ -179,20 +168,6 @@ export function TestPlayer({ testId, chapitreId, type, questions, attemptsUsed =
     setStreak(0);
     setLastXPGain(null);
   };
-
-  if (maxReached && !showResults) {
-    return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-amber-200 bg-amber-50/50 py-12 text-center">
-        <Target className="h-10 w-10 text-amber-500" />
-        <p className="mt-4 font-serif text-lg font-bold text-foreground">
-          Nombre maximum de tentatives atteint
-        </p>
-        <p className="mt-1 text-sm text-text-muted">
-          Vous avez utilisé vos {maxAttempts} tentatives pour ce test.
-        </p>
-      </div>
-    );
-  }
 
   if (questions.length === 0) {
     return <p className="text-sm text-text-muted">Aucune question disponible.</p>;
@@ -209,9 +184,6 @@ export function TestPlayer({ testId, chapitreId, type, questions, attemptsUsed =
         saving={saving}
         saved={saved}
         saveError={saveError}
-        attemptsLeft={attemptsLeft}
-        maxReached={maxReached}
-        maxAttempts={maxAttempts}
         onReset={reset}
         onBack={onComplete ? () => onComplete(results.correct, results.total) : undefined}
         onQuestionClick={(qi) => { setShowResults(false); setIndex(qi); }}
@@ -468,9 +440,6 @@ type ResultsScreenProps = {
   saving: boolean;
   saved: boolean;
   saveError: boolean;
-  attemptsLeft: number;
-  maxReached: boolean;
-  maxAttempts: number;
   onReset: () => void;
   onBack?: () => void;
   onQuestionClick: (idx: number) => void;
@@ -629,9 +598,6 @@ function ResultsScreen({
   saving,
   saved,
   saveError,
-  attemptsLeft,
-  maxReached,
-  maxAttempts,
   onReset,
   onBack,
   onQuestionClick,
@@ -746,10 +712,6 @@ function ResultsScreen({
           {saving && <span className="inline-flex items-center gap-1.5"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" /> Sauvegarde…</span>}
           {saved && <span className="text-emerald-600">✓ Résultat enregistré</span>}
           {saveError && <span className="text-rose-500">⚠ Échec — score affiché mais non enregistré</span>}
-          {!maxReached && attemptsLeft > 0 && saved && (
-            <span className="ml-1.5">· {attemptsLeft} tentative{attemptsLeft !== 1 ? "s" : ""} restante{attemptsLeft !== 1 ? "s" : ""}</span>
-          )}
-          {maxReached && <span className="ml-1.5 text-amber-600">· Aucune tentative restante</span>}
         </div>
       </div>
 
@@ -871,9 +833,9 @@ function ResultsScreen({
 
       {/* ─── Actions ─── */}
       <div className="flex flex-wrap items-center justify-center gap-3 animate-result-enter" style={{ animationDelay: "0.7s" }}>
-        <Button onClick={onReset} variant="outline" className="gap-2 rounded-xl" disabled={maxReached}>
+        <Button onClick={onReset} variant="outline" className="gap-2 rounded-xl">
           <RotateCcw className="h-4 w-4" />
-          {maxReached ? "Tentatives épuisées" : "Refaire le test"}
+          Refaire le test
         </Button>
         {onBack && (
           <Button onClick={onBack} className="gap-2 rounded-xl">
