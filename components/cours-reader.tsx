@@ -28,6 +28,10 @@ import {
   Trophy,
   LogIn,
   ExternalLink,
+  Target,
+  Flame,
+  Zap,
+  TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -264,7 +268,7 @@ export function CoursReader({
     };
 
     return (
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-6">
         {/* Header row */}
         <div className="flex items-center justify-between">
           <div>
@@ -291,61 +295,194 @@ export function CoursReader({
         {allDone ? (() => {
           const msg = getMessage();
           const MsgIcon = msg.icon;
-          return (
-            <div className="rounded-2xl border border-accent-gold/15 bg-gradient-to-br from-accent-gold/5 via-warm-cream to-surface overflow-hidden">
-              {/* Score hero */}
-              <div className="relative px-6 py-5">
-                {/* Decorative dots */}
-                <div className="absolute top-3 right-4 flex gap-1 opacity-20">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <div key={i} className="h-1.5 w-1.5 rounded-full bg-accent-gold" style={{ animationDelay: `${i * 0.1}s` }} />
-                  ))}
-                </div>
 
-                <div className="flex items-center gap-4">
-                  {/* Score circle */}
-                  <div className="relative flex h-20 w-20 shrink-0 items-center justify-center">
-                    <svg viewBox="0 0 80 80" className="absolute inset-0 h-full w-full -rotate-90">
-                      <circle cx="40" cy="40" r="34" fill="none" stroke="currentColor" strokeWidth="5" className="text-primary/8" />
-                      <circle
-                        cx="40" cy="40" r="34" fill="none" stroke="currentColor" strokeWidth="5"
-                        strokeLinecap="round"
-                        strokeDasharray={`${2 * Math.PI * 34}`}
-                        strokeDashoffset={`${2 * Math.PI * 34 * (1 - globalPct / 100)}`}
+          // Grade-based theming
+          const grade = globalPct >= 80 ? "excellent" : globalPct >= 60 ? "bien" : globalPct >= 40 ? "moyen" : "insuffisant";
+          const gradeTheme = {
+            excellent: {
+              gradient: "from-amber-50 via-yellow-50/80 to-warm-cream",
+              border: "border-amber-200/60",
+              ring: "ring-amber-100",
+              medalBg: "bg-gradient-to-br from-amber-100 to-yellow-50",
+              medalIcon: Trophy,
+              medalColor: "text-amber-500",
+              label: "Excellent !",
+              gaugeFill: "text-amber-400",
+              accentDot: "bg-amber-300",
+              emoji: "🏆",
+            },
+            bien: {
+              gradient: "from-primary/5 via-sky-50/80 to-warm-cream",
+              border: "border-primary/20",
+              ring: "ring-primary/10",
+              medalBg: "bg-gradient-to-br from-primary/10 to-sky-50",
+              medalIcon: Award,
+              medalColor: "text-primary",
+              label: "Très bien !",
+              gaugeFill: "text-primary",
+              accentDot: "bg-primary/40",
+              emoji: "🎯",
+            },
+            moyen: {
+              gradient: "from-orange-50/80 via-amber-50/50 to-warm-cream",
+              border: "border-orange-200/50",
+              ring: "ring-orange-100/50",
+              medalBg: "bg-gradient-to-br from-orange-100 to-amber-50",
+              medalIcon: Target,
+              medalColor: "text-orange-500",
+              label: "Peut mieux faire",
+              gaugeFill: "text-orange-400",
+              accentDot: "bg-orange-300",
+              emoji: "📚",
+            },
+            insuffisant: {
+              gradient: "from-slate-50 via-gray-50/80 to-warm-cream",
+              border: "border-slate-200/60",
+              ring: "ring-slate-100",
+              medalBg: "bg-gradient-to-br from-slate-100 to-gray-50",
+              medalIcon: GraduationCap,
+              medalColor: "text-slate-500",
+              label: "Continuez !",
+              gaugeFill: "text-slate-400",
+              accentDot: "bg-slate-300",
+              emoji: "💪",
+            },
+          }[grade];
+
+          const GradeMedalIcon = gradeTheme.medalIcon;
+          const circumference = 2 * Math.PI * 52;
+          const dashOffset = circumference * (1 - globalPct / 100);
+
+          // Earned achievements
+          const achievements = [
+            { icon: Flame, label: "Score parfait", earned: globalPct === 100, color: "text-orange-500", bg: "bg-orange-50" },
+            { icon: Zap, label: "Excellence", earned: globalPct >= 80 && globalPct < 100, color: "text-amber-500", bg: "bg-amber-50" },
+            { icon: TrendingUp, label: "Progression", earned: globalPct >= 50, color: "text-emerald-500", bg: "bg-emerald-50" },
+            { icon: Target, label: "Précision", earned: totalCorrect >= Math.ceil(totalQuestions * 0.7), color: "text-primary", bg: "bg-primary/5" },
+          ];
+          const earned = achievements.filter(a => a.earned);
+
+          return (
+            <div className={cn(
+              "relative overflow-hidden rounded-3xl border-2",
+              gradeTheme.border,
+              `bg-gradient-to-br ${gradeTheme.gradient}`,
+            )}>
+              {/* Decorative background elements */}
+              <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-accent-gold/5 blur-3xl" />
+              <div className="pointer-events-none absolute -left-4 bottom-0 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
+              <div className="pointer-events-none absolute right-6 top-4 flex gap-1.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className={cn("h-1.5 w-1.5 rounded-full animate-pulse", gradeTheme.accentDot)}
+                    style={{ animationDelay: `${i * 200}ms`, opacity: 0.3 + i * 0.1 }}
+                  />
+                ))}
+              </div>
+
+              {/* Main content */}
+              <div className="relative px-6 pt-8 pb-6">
+                <div className="flex flex-col items-center text-center">
+                  {/* Medal + Score gauge */}
+                  <div className="relative mb-2">
+                    {/* Outer glow ring */}
+                    <div className={cn(
+                      "absolute inset-0 scale-110 rounded-full opacity-30 blur-md",
+                      grade === "excellent" ? "bg-amber-200" : grade === "bien" ? "bg-primary/30" : "bg-slate-200"
+                    )} />
+
+                    {/* Gauge ring */}
+                    <div className="relative flex h-32 w-32 items-center justify-center">
+                      <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full -rotate-90">
+                        <circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" strokeWidth="7" className="text-black/[0.04]" />
+                        <circle
+                          cx="60" cy="60" r="52" fill="none" stroke="currentColor" strokeWidth="7"
+                          strokeLinecap="round"
+                          strokeDasharray={circumference}
+                          strokeDashoffset={dashOffset}
+                          className={cn("transition-all duration-1000 ease-out", gradeTheme.gaugeFill)}
+                        />
+                      </svg>
+
+                      {/* Center medal icon */}
+                      <div className={cn(
+                        "relative flex h-16 w-16 items-center justify-center rounded-2xl border shadow-lg",
+                        gradeTheme.medalBg, gradeTheme.border, `ring-4 ${gradeTheme.ring}`
+                      )}>
+                        <GradeMedalIcon className={cn("h-7 w-7", gradeTheme.medalColor)} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Grade label */}
+                  <p className={cn(
+                    "text-xs font-bold uppercase tracking-[0.2em] mb-2",
+                    gradeTheme.medalColor,
+                  )}>
+                    {gradeTheme.label}
+                  </p>
+
+                  {/* Score */}
+                  <div className="flex items-baseline gap-1.5 mb-1">
+                    <span className="font-serif text-5xl font-black tracking-tight text-foreground">{globalPct}</span>
+                    <span className="text-lg font-bold text-text-muted">%</span>
+                  </div>
+
+                  {/* Stars */}
+                  <div className="flex items-center gap-1.5 mb-3">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <Star
+                        key={i}
                         className={cn(
-                          "transition-all duration-1000 ease-out",
-                          globalPct >= 70 ? "text-accent-gold" : globalPct >= 50 ? "text-primary" : "text-accent-rose"
+                          "h-6 w-6 transition-all",
+                          i < globalStars
+                            ? "fill-accent-gold text-accent-gold drop-shadow-sm"
+                            : "text-primary/10"
                         )}
                       />
-                    </svg>
-                    <span className="font-serif text-xl font-bold text-foreground">{globalPct}%</span>
+                    ))}
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 mb-1">
-                      {Array.from({ length: 3 }).map((_, i) => (
-                        <Star key={i} className={cn("h-4 w-4", i < globalStars ? "fill-accent-gold text-accent-gold" : "text-primary/10")} />
-                      ))}
-                    </div>
-                    <p className="font-serif text-base font-bold text-foreground">
-                      {totalCorrect}/{totalQuestions} réponses correctes
-                    </p>
-                    <div className="flex items-center gap-1.5 mt-1">
-                      <MsgIcon className={cn("h-3.5 w-3.5 shrink-0", msg.color)} />
-                      <p className={cn("text-xs font-medium", msg.color)}>{msg.text}</p>
-                    </div>
+                  {/* Score detail */}
+                  <p className="text-sm text-text-muted mb-1">
+                    <span className="font-bold text-foreground">{totalCorrect}</span> / {totalQuestions} réponses correctes
+                  </p>
+
+                  {/* Motivational message */}
+                  <div className="flex items-center gap-2 rounded-full border border-primary/8 bg-white/60 px-4 py-1.5 backdrop-blur-sm">
+                    <MsgIcon className={cn("h-4 w-4 shrink-0", msg.color)} />
+                    <p className={cn("text-xs font-semibold", msg.color)}>{msg.text}</p>
                   </div>
                 </div>
+
+                {/* Achievements strip */}
+                {earned.length > 0 && (
+                  <div className="mt-5 flex justify-center gap-2.5">
+                    {earned.map((a, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold shadow-sm",
+                          a.bg, a.color, "border-current/10"
+                        )}
+                      >
+                        <a.icon className="h-3.5 w-3.5" />
+                        {a.label}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Divider */}
-              <div className="h-px bg-accent-gold/10" />
+              <div className="h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
 
               {/* Navigation CTAs */}
-              <div className="flex items-stretch divide-x divide-accent-gold/10">
+              <div className="flex items-stretch divide-x divide-primary/8 bg-white/30 backdrop-blur-sm">
                 <button
                   onClick={() => setTestMode(false)}
-                  className="flex flex-1 items-center justify-center gap-2 px-4 py-3.5 text-sm font-medium text-text-muted transition-colors hover:bg-primary/3 hover:text-primary"
+                  className="flex flex-1 items-center justify-center gap-2 px-4 py-4 text-sm font-medium text-text-muted transition-all hover:bg-white/60 hover:text-primary"
                 >
                   <BookOpen className="h-4 w-4" />
                   Revoir le cours
@@ -353,7 +490,7 @@ export function CoursReader({
                 {nextChapter ? (
                   <Link
                     href={`/cours/${nextChapter.id}`}
-                    className="flex flex-1 items-center justify-center gap-2 px-4 py-3.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/5"
+                    className="flex flex-1 items-center justify-center gap-2 px-4 py-4 text-sm font-bold text-primary transition-all hover:bg-primary/5"
                   >
                     Chapitre {nextChapter.numero}
                     <ChevronRight className="h-4 w-4" />
@@ -361,7 +498,7 @@ export function CoursReader({
                 ) : (
                   <Link
                     href="/cours"
-                    className="flex flex-1 items-center justify-center gap-2 px-4 py-3.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/5"
+                    className="flex flex-1 items-center justify-center gap-2 px-4 py-4 text-sm font-bold text-primary transition-all hover:bg-primary/5"
                   >
                     Tous les chapitres
                     <ChevronRight className="h-4 w-4" />
@@ -371,39 +508,53 @@ export function CoursReader({
             </div>
           );
         })() : (
-          /* In-progress state */
-          <div className="rounded-2xl border border-primary/8 bg-gradient-to-br from-primary/3 via-warm-cream to-surface p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
-                <GraduationCap className="h-5 w-5 text-primary" />
+          /* In-progress state — richer progress card */
+          <div className="relative overflow-hidden rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/5 via-warm-cream to-surface p-6">
+            <div className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary/5 blur-2xl" />
+            <div className="flex items-center gap-4">
+              <div className="relative flex h-14 w-14 shrink-0 items-center justify-center">
+                <svg viewBox="0 0 56 56" className="absolute inset-0 h-full w-full -rotate-90">
+                  <circle cx="28" cy="28" r="24" fill="none" stroke="currentColor" strokeWidth="4" className="text-primary/10" />
+                  <circle
+                    cx="28" cy="28" r="24" fill="none" stroke="currentColor" strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeDasharray={`${2 * Math.PI * 24}`}
+                    strokeDashoffset={`${2 * Math.PI * 24 * (1 - (allTests.length > 0 ? completedCount / allTests.length : 0))}`}
+                    className="text-primary transition-all duration-700 ease-out"
+                  />
+                </svg>
+                <GraduationCap className="h-6 w-6 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-serif text-sm font-bold text-foreground">
+                <p className="font-serif text-base font-bold text-foreground">
                   {completedCount} / {allTests.length} test{allTests.length !== 1 ? "s" : ""} complété{completedCount !== 1 ? "s" : ""}
                 </p>
-                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-primary/10">
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-primary/8">
                   <div
-                    className="h-full rounded-full bg-primary transition-all duration-700 ease-out"
+                    className="h-full rounded-full bg-gradient-to-r from-primary to-primary-light transition-all duration-700 ease-out"
                     style={{ width: `${allTests.length > 0 ? (completedCount / allTests.length) * 100 : 0}%` }}
                   />
                 </div>
+                <p className="mt-1 text-xs text-text-muted">
+                  {completedCount > 0
+                    ? `${totalCorrect}/${totalQuestions} réponses correctes`
+                    : "Commencez un test pour évaluer vos connaissances"
+                  }
+                </p>
               </div>
-              {completedCount > 0 && (
-                <span className="text-xs font-bold text-text-muted tabular-nums">
-                  {totalCorrect}/{totalQuestions}
-                </span>
-              )}
             </div>
           </div>
         )}
 
         {/* Test list */}
         {inCourseTests.length > 0 && (
-          <div className="space-y-2.5">
-            <div className="flex items-center gap-2 px-1">
-              <div className="h-px flex-1 bg-primary/10" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-primary/50">Avant le cours</span>
-              <div className="h-px flex-1 bg-primary/10" />
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 px-1">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/8">
+                <BookOpen className="h-3 w-3 text-primary" />
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-widest text-primary/60">Pendant le cours</span>
+              <div className="h-px flex-1 bg-gradient-to-r from-primary/10 to-transparent" />
             </div>
             {inCourseTests.map((test) => (
               <TestCard key={test.id} test={test} result={testResults[test.id]} onStart={() => setActiveTestId(test.id)} />
@@ -412,11 +563,13 @@ export function CoursReader({
         )}
 
         {outCourseTests.length > 0 && (
-          <div className="space-y-2.5">
-            <div className="flex items-center gap-2 px-1">
-              <div className="h-px flex-1 bg-primary/10" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-primary/50">Après le cours</span>
-              <div className="h-px flex-1 bg-primary/10" />
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 px-1">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-accent-gold/10">
+                <ClipboardCheck className="h-3 w-3 text-accent-gold" />
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-widest text-accent-gold/70">Après le cours</span>
+              <div className="h-px flex-1 bg-gradient-to-r from-accent-gold/15 to-transparent" />
             </div>
             {outCourseTests.map((test) => (
               <TestCard key={test.id} test={test} result={testResults[test.id]} onStart={() => setActiveTestId(test.id)} />
@@ -424,20 +577,26 @@ export function CoursReader({
           </div>
         )}
 
-        {/* Bottom navigation — visible when all done, for quick access */}
+        {/* Bottom navigation — visible when all done */}
         {allDone && nextChapter && (
-          <div className="flex items-center gap-3 rounded-xl border border-dashed border-primary/15 bg-surface px-4 py-3">
-            <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Prochain chapitre</p>
-              <p className="text-sm font-serif font-semibold text-foreground truncate mt-0.5">{nextChapter.titre}</p>
+          <div className="relative overflow-hidden rounded-2xl border border-primary/10 bg-gradient-to-r from-primary/5 via-surface to-primary/5">
+            <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-primary via-primary-light to-primary/40" />
+            <div className="flex items-center gap-4 px-5 py-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/8">
+                <ChevronRight className="h-5 w-5 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-accent-gold">Prochain chapitre</p>
+                <p className="text-sm font-serif font-bold text-foreground truncate mt-0.5">{nextChapter.titre}</p>
+              </div>
+              <Link
+                href={`/cours/${nextChapter.id}`}
+                className="group inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/30"
+              >
+                Continuer
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
             </div>
-            <Link
-              href={`/cours/${nextChapter.id}`}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-primary/20 transition-colors hover:bg-primary/90"
-            >
-              Continuer
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
           </div>
         )}
       </div>
@@ -811,84 +970,109 @@ function TestCard({
   const stars = percentage <= 40 ? 1 : percentage <= 70 ? 2 : 3;
 
   const typeBadge = test.type === "QCM"
-    ? { label: "QCM", cls: "bg-primary/10 text-primary" }
+    ? { label: "QCM", cls: "bg-primary/10 text-primary border-primary/15" }
     : test.type === "VRAI_FAUX"
-      ? { label: "V/F", cls: "bg-amber-100 text-amber-700" }
-      : { label: "Cas clinique", cls: "bg-accent-rose/10 text-accent-rose" };
+      ? { label: "V/F", cls: "bg-amber-100 text-amber-700 border-amber-200/50" }
+      : { label: "Cas clinique", cls: "bg-accent-rose/10 text-accent-rose border-accent-rose/15" };
 
   return (
     <div
       className={cn(
-        "group flex items-center gap-3 rounded-xl border bg-surface px-4 py-3 transition-all",
+        "group relative overflow-hidden rounded-2xl border bg-surface transition-all duration-300",
         done
-          ? "border-green-200/60 bg-green-50/20"
-          : "border-primary/8 hover:border-primary/15 hover:shadow-sm"
+          ? "border-emerald-200/60 hover:border-emerald-300/70 hover:shadow-md hover:shadow-emerald-100/50"
+          : "border-primary/8 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
       )}
     >
+      {/* Subtle left accent bar */}
       <div className={cn(
-        "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
-        done ? "bg-green-100" : "bg-primary/8"
-      )}>
-        {done ? (
-          <CheckCircle2 className="h-4.5 w-4.5 text-green-600" />
-        ) : (
-          <ClipboardCheck className="h-4.5 w-4.5 text-primary" />
-        )}
-      </div>
+        "absolute inset-y-0 left-0 w-0.5 transition-all group-hover:w-1",
+        done ? "bg-emerald-400" : "bg-primary/30 group-hover:bg-primary"
+      )} />
 
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap">
-          <h3 className="font-serif text-sm font-bold text-foreground truncate">{test.titre}</h3>
-          <Badge className={cn("text-[10px] font-bold uppercase", typeBadge.cls)}>{typeBadge.label}</Badge>
-        </div>
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-xs text-text-muted">
-            {test.questions.length} question{test.questions.length !== 1 ? "s" : ""}
-          </span>
-          {done && (
-            <>
-              <span className="text-xs text-text-muted">·</span>
-              <span className="text-xs font-semibold text-foreground">{result.correct}/{result.total}</span>
-              <span className={cn(
-                "text-xs font-bold",
-                percentage >= 70 ? "text-green-600" : percentage >= 50 ? "text-amber-600" : "text-accent-rose"
-              )}>
-                {percentage}%
-              </span>
-              <div className="flex items-center gap-0.5 ml-auto">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={cn(
-                      "h-3 w-3",
-                      i < stars ? "fill-accent-gold text-accent-gold" : "text-primary/10"
-                    )}
-                  />
-                ))}
-              </div>
-            </>
+      <div className="flex items-center gap-4 px-5 py-4">
+        {/* Status icon */}
+        <div className={cn(
+          "relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-all",
+          done
+            ? "bg-gradient-to-br from-emerald-100 to-emerald-50 shadow-sm shadow-emerald-200/40"
+            : "bg-gradient-to-br from-primary/8 to-primary/3 group-hover:from-primary/12 group-hover:to-primary/5"
+        )}>
+          {done ? (
+            <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+          ) : (
+            <ClipboardCheck className="h-5 w-5 text-primary" />
+          )}
+          {done && percentage >= 80 && (
+            <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent-gold text-white shadow-sm">
+              <Star className="h-3 w-3 fill-white" />
+            </div>
           )}
         </div>
-      </div>
 
-      <Button
-        size="sm"
-        variant={done ? "outline" : "default"}
-        onClick={onStart}
-        className={cn("gap-1.5 shrink-0 text-xs h-8", !done && "shadow-sm shadow-primary/15")}
-      >
-        {done ? (
-          <>
-            <RotateCcw className="h-3 w-3" />
-            Refaire
-          </>
-        ) : (
-          <>
-            Commencer
-            <ArrowRight className="h-3 w-3" />
-          </>
-        )}
-      </Button>
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <h3 className="font-serif text-sm font-bold text-foreground group-hover:text-primary transition-colors">{test.titre}</h3>
+            <Badge className={cn("text-[10px] font-bold uppercase border", typeBadge.cls)}>{typeBadge.label}</Badge>
+          </div>
+          <div className="flex items-center gap-3 mt-1.5">
+            <span className="text-xs text-text-muted">
+              {test.questions.length} question{test.questions.length !== 1 ? "s" : ""}
+            </span>
+            {done && (
+              <>
+                <div className="h-3 w-px bg-primary/10" />
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-foreground">{result.correct}/{result.total}</span>
+                  <span className={cn(
+                    "rounded-md px-1.5 py-0.5 text-[10px] font-bold",
+                    percentage >= 70 ? "bg-emerald-100 text-emerald-700" : percentage >= 50 ? "bg-amber-100 text-amber-700" : "bg-rose-100 text-rose-700"
+                  )}>
+                    {percentage}%
+                  </span>
+                </div>
+                <div className="flex items-center gap-0.5 ml-auto">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={cn(
+                        "h-3.5 w-3.5",
+                        i < stars ? "fill-accent-gold text-accent-gold" : "text-primary/10"
+                      )}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Action button */}
+        <Button
+          size="sm"
+          variant={done ? "outline" : "default"}
+          onClick={onStart}
+          className={cn(
+            "gap-2 shrink-0 text-xs h-9 rounded-xl transition-all",
+            done
+              ? "hover:bg-primary/5 hover:border-primary/20"
+              : "shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/25"
+          )}
+        >
+          {done ? (
+            <>
+              <RotateCcw className="h-3.5 w-3.5" />
+              Refaire
+            </>
+          ) : (
+            <>
+              Commencer
+              <ArrowRight className="h-3.5 w-3.5" />
+            </>
+          )}
+        </Button>
+      </div>
     </div>
   );
 }
