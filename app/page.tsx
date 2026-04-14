@@ -4,13 +4,13 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
+import Image from "next/image";
 import {
   BookOpen,
   GraduationCap,
   Brain,
   FileText,
   ChevronRight,
-  Stethoscope,
   Award,
   Users,
   CheckCircle2,
@@ -75,9 +75,13 @@ export default async function Home() {
       <nav className="sticky top-0 z-50 border-b border-primary/10 bg-surface/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white">
-              <Stethoscope className="h-5 w-5" />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="Faculté de Médecine de Tunis"
+              width={40}
+              height={40}
+              className="h-10 w-10 object-contain"
+            />
             <span className="font-serif text-lg font-bold tracking-tight text-primary">
               FMT Médecine
             </span>
@@ -396,9 +400,13 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
-                <Stethoscope className="h-4 w-4" />
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Faculté de Médecine de Tunis"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
+              />
               <span className="font-serif text-sm font-bold text-primary">
                 FMT Médecine
               </span>

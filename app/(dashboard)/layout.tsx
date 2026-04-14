@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { AppSidebar, SidebarProvider, SidebarMobileTrigger } from "@/components/app-sidebar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -12,6 +13,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Mobile header */}
           <header className="flex items-center gap-3 border-b border-primary/8 bg-surface px-4 py-3 md:hidden">
             <SidebarMobileTrigger />
+            <Image
+              src="/logo.png"
+              alt="FMT"
+              width={28}
+              height={28}
+              className="h-7 w-7 object-contain"
+            />
             <span className="font-serif text-sm font-bold text-primary">
               FMT Médecine
             </span>

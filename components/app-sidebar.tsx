@@ -4,10 +4,10 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser, UserButton, SignInButton } from "@clerk/nextjs";
+import Image from "next/image";
 import {
   BookOpen,
   Settings,
-  Stethoscope,
   Menu,
   Home,
   PanelLeftClose,
@@ -354,13 +354,13 @@ function MobileSidebarContent({ onNavigate }: { onNavigate: () => void }) {
     <div className="flex h-full flex-col bg-surface">
       {/* Header */}
       <div className="flex items-center gap-2.5 border-b border-primary/8 px-5 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white">
-          {isAdminMode ? (
+        {isAdminMode ? (
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white">
             <ShieldCheck className="h-5 w-5" />
-          ) : (
-            <Stethoscope className="h-5 w-5" />
-          )}
-        </div>
+          </div>
+        ) : (
+          <Image src="/logo.png" alt="FMT" width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
+        )}
         <div>
           <p className="font-serif text-base font-bold text-primary">
             {isAdminMode ? "Administration" : "FMT Médecine"}
@@ -418,13 +418,13 @@ export function AppSidebar() {
           collapsed ? "justify-center px-2 py-5" : "gap-2.5 px-5 py-5"
         )}
       >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white shadow-sm shadow-primary/20">
-          {isAdminMode ? (
+        {isAdminMode ? (
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white shadow-sm shadow-primary/20">
             <ShieldCheck className="h-5 w-5" />
-          ) : (
-            <Stethoscope className="h-5 w-5" />
-          )}
-        </div>
+          </div>
+        ) : (
+          <Image src="/logo.png" alt="FMT" width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
+        )}
         {!collapsed && (
           <div className="overflow-hidden">
             <p className="font-serif text-base font-bold tracking-tight text-primary">
