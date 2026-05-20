@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useRef, useEffect, useCallback } from "react";
-import { useUser, SignInButton } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { TestPlayer } from "@/components/test-player";
 import { FicheResume } from "@/components/fiche-resume";
 import { VideoEmbed } from "@/components/video-embed";
@@ -198,17 +198,18 @@ export function CoursReader({
             <p className="mt-2 max-w-sm text-sm text-text-muted leading-relaxed">
               Créez un compte gratuit pour accéder aux QCM, suivre votre progression et obtenir vos résultats.
             </p>
-            <SignInButton mode="modal">
-              <button className="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-sm shadow-primary/20 transition-colors hover:bg-primary/90">
-                <LogIn className="h-4 w-4" />
-                Se connecter
-              </button>
-            </SignInButton>
+            <Link
+              href="/sign-in"
+              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-sm shadow-primary/20 transition-colors hover:bg-primary/90"
+            >
+              <LogIn className="h-4 w-4" />
+              Se connecter
+            </Link>
             <p className="mt-3 text-xs text-text-muted">
               Pas encore de compte ?{" "}
-              <SignInButton mode="modal">
-                <button className="font-semibold text-primary hover:underline">Inscrivez-vous gratuitement</button>
-              </SignInButton>
+              <Link href="/sign-up" className="font-semibold text-primary hover:underline">
+                Inscrivez-vous gratuitement
+              </Link>
             </p>
           </div>
         </div>

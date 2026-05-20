@@ -17,9 +17,9 @@ const sans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Faculté de Médecine de Tunis — Plateforme Pédagogique",
+  title: "Learn Oncogyn",
   description:
-    "Plateforme pédagogique de la Faculté de Médecine de Tunis. Cours structurés, tests interactifs et fiches de révision.",
+    "Plateforme pédagogique en oncologie gynécologique et mammaire — Learn Oncogyn.",
 };
 
 export default function RootLayout({

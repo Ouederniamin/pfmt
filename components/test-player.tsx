@@ -564,10 +564,10 @@ function Confetti({ count = 24 }: { count?: number }) {
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
       {Array.from({ length: count }).map((_, i) => {
         const color = colors[i % colors.length];
-        const left = Math.random() * 100;
-        const delay = Math.random() * 2;
-        const size = 4 + Math.random() * 6;
-        const duration = 2.5 + Math.random() * 2;
+        const left = (i * 37 + 13) % 100;
+        const delay = ((i * 17) % 20) / 10;
+        const size = 4 + ((i * 7) % 6);
+        const duration = 2.5 + ((i * 11) % 20) / 10;
         const shape = i % 3 === 0 ? "rounded-full" : i % 3 === 1 ? "rounded-sm" : "";
         return (
           <div

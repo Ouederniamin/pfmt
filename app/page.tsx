@@ -1,10 +1,7 @@
 import Link from "next/link";
-import {
-  SignInButton,
-  UserButton,
-} from "@clerk/nextjs";
-import { auth, currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
+import { UserButton } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import {
   BookOpen,
   GraduationCap,
@@ -76,14 +73,15 @@ export default async function Home() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
             <Image
-              src="/logo.png"
-              alt="Faculté de Médecine de Tunis"
+              src="/learn-oncogyn-mark-v2.png"
+              alt="Learn Oncogyn"
               width={40}
               height={40}
               className="h-10 w-10 object-contain"
+              priority
             />
             <span className="font-serif text-lg font-bold tracking-tight text-primary">
-              Faculté de Médecine de Tunis
+              Learn Oncogyn
             </span>
           </Link>
           <div className="flex items-center gap-3">
@@ -96,12 +94,13 @@ export default async function Home() {
               </Link>
             )}
             {!isSignedIn && (
-              <SignInButton mode="modal">
-                <button className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/30">
-                  Se connecter
-                  <ChevronRight className="h-4 w-4" />
-                </button>
-              </SignInButton>
+              <Link
+                href="/sign-in"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/30"
+              >
+                Se connecter
+                <ChevronRight className="h-4 w-4" />
+              </Link>
             )}
             {isSignedIn && (
               <>
@@ -137,13 +136,13 @@ export default async function Home() {
             {/* Badge */}
             <div className="animate-fade-up inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-sm font-medium text-white/90 backdrop-blur-sm">
               <GraduationCap className="h-4 w-4 text-accent-gold" />
-              Faculté de Médecine de Tunis
+              Learn Oncogyn
             </div>
 
             {/* Headline */}
             <h1 className="animate-fade-up delay-100 mt-8 font-serif text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl">
-              Plateforme
-              <span className="block text-accent-gold">Pédagogique</span>
+              Oncologie Gynécologique
+              <span className="block text-accent-gold">&amp; Mammaire</span>
             </h1>
 
             {/* Subtitle */}
@@ -331,7 +330,7 @@ export default async function Home() {
                 {
                   step: "01",
                   title: "Choisissez un chapitre",
-                  desc: "Parcourez les chapitres de la Faculté de Médecine de Tunis.",
+                  desc: "Parcourez les chapitres couvrant l'oncologie gynécologique et mammaire — Learn Oncogyn.",
                   icon: BookOpen,
                 },
                 {
@@ -383,7 +382,7 @@ export default async function Home() {
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-base text-white/60">
             Accédez dès maintenant aux cours, fiches et tests interactifs
-            d'études médicales — Faculté de Médecine de Tunis.
+            d’oncologie gynécologique et mammaire — Learn Oncogyn.
           </p>
           <Link
             href="/cours"
@@ -401,18 +400,18 @@ export default async function Home() {
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
             <div className="flex items-center gap-2.5">
               <Image
-                src="/logo.png"
-                alt="Faculté de Médecine de Tunis"
+                src="/learn-oncogyn-mark-v2.png"
+                alt="Learn Oncogyn"
                 width={32}
                 height={32}
                 className="h-8 w-8 object-contain"
               />
               <span className="font-serif text-sm font-bold text-primary">
-                Faculté de Médecine de Tunis
+                Learn Oncogyn
               </span>
             </div>
             <p className="text-center text-sm text-text-muted">
-              Faculté de Médecine de Tunis
+              Learn Oncogyn — Oncologie Gyn. & Mammaire
             </p>
             <div className="flex gap-4">
               <Link
@@ -436,7 +435,7 @@ export default async function Home() {
               <span className="text-xs text-accent-gold">◆</span>
             </div>
             <p className="text-xs text-text-muted/60">
-              © {new Date().getFullYear()} Faculté de Médecine de Tunis. Projet
+              © {new Date().getFullYear()} Learn Oncogyn. Projet
               pédagogique.
             </p>
           </div>

@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useUser, UserButton, SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useUser, UserButton } from "@clerk/nextjs";
 import {
   BookOpen,
   Settings,
@@ -300,21 +300,23 @@ function SidebarUserCard({ collapsed }: { collapsed?: boolean }) {
     if (collapsed) {
       return (
         <div className="flex justify-center">
-          <SignInButton mode="modal">
-            <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white transition hover:bg-primary/90">
-              <LogIn className="h-4 w-4" />
-            </button>
-          </SignInButton>
+          <Link
+            href="/sign-in"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white transition hover:bg-primary/90"
+          >
+            <LogIn className="h-4 w-4" />
+          </Link>
         </div>
       );
     }
     return (
-      <SignInButton mode="modal">
-        <button className="flex w-full items-center gap-3 rounded-xl bg-primary/8 p-3 text-sm font-semibold text-primary transition hover:bg-primary/15">
-          <LogIn className="h-4 w-4 shrink-0" />
-          Se connecter
-        </button>
-      </SignInButton>
+      <Link
+        href="/sign-in"
+        className="flex w-full items-center gap-3 rounded-xl bg-primary/8 p-3 text-sm font-semibold text-primary transition hover:bg-primary/15"
+      >
+        <LogIn className="h-4 w-4 shrink-0" />
+        Se connecter
+      </Link>
     );
   }
 
@@ -332,8 +334,8 @@ function SidebarUserCard({ collapsed }: { collapsed?: boolean }) {
       <div className="flex items-center gap-3">
         <UserButton appearance={{ elements: { avatarBox: "h-8 w-8" } }} />
         <div className="text-xs">
-          <p className="font-semibold text-foreground">Faculté de Médecine de Tunis</p>
-          <p className="text-text-muted">Faculté de Médecine de Tunis</p>
+          <p className="font-semibold text-foreground">Learn Oncogyn</p>
+          <p className="text-text-muted">Onco. Gyn. & Mammaire</p>
         </div>
       </div>
     </div>
@@ -359,14 +361,14 @@ function MobileSidebarContent({ onNavigate }: { onNavigate: () => void }) {
             <ShieldCheck className="h-5 w-5" />
           </div>
         ) : (
-          <Image src="/logo.png" alt="FMT" width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
+          <Image src="/learn-oncogyn-mark-v2.png" alt="Learn Oncogyn" width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
         )}
         <div>
           <p className="font-serif text-base font-bold text-primary">
-            {isAdminMode ? "Administration" : "Faculté de Médecine de Tunis"}
+            {isAdminMode ? "Administration" : "Learn Oncogyn"}
           </p>
           <p className="text-[11px] font-medium text-text-muted">
-            {isAdminMode ? "Panneau de gestion" : "Plateforme pédagogique"}
+            {isAdminMode ? "Panneau de gestion" : "Learn Oncogyn"}
           </p>
         </div>
       </div>
@@ -423,15 +425,15 @@ export function AppSidebar() {
             <ShieldCheck className="h-5 w-5" />
           </div>
         ) : (
-          <Image src="/logo.png" alt="FMT" width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
+          <Image src="/learn-oncogyn-mark-v2.png" alt="Learn Oncogyn" width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
         )}
         {!collapsed && (
           <div className="overflow-hidden">
             <p className="font-serif text-base font-bold tracking-tight text-primary">
-              {isAdminMode ? "Administration" : "Faculté de Médecine de Tunis"}
+              {isAdminMode ? "Administration" : "Learn Oncogyn"}
             </p>
             <p className="text-[11px] font-medium text-text-muted">
-              {isAdminMode ? "Panneau de gestion" : "Plateforme pédagogique"}
+              {isAdminMode ? "Panneau de gestion" : "Learn Oncogyn"}
             </p>
           </div>
         )}

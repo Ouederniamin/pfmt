@@ -134,7 +134,7 @@ export function StudentDashboard({ stats, chapitreStats, recentResults }: Props)
           Tableau de bord
         </h1>
         <p className="mt-1 text-sm text-text-muted">
-          Suivez votre progression — Faculté de Médecine de Tunis
+          Suivez votre progression — Learn Oncogyn, oncologie gyn. &amp; mammaire
         </p>
       </div>
 

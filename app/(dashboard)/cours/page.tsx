@@ -19,8 +19,8 @@ export default async function CoursListPage() {
   });
 
   // Fetch progress + test results for current user
-  let progressMap: Record<string, { started: boolean; completed: boolean }> = {};
-  let testResultsMap: Record<string, { completed: number; total: number; bestPct: number }> = {};
+  const progressMap: Record<string, { started: boolean; completed: boolean }> = {};
+  const testResultsMap: Record<string, { completed: number; total: number; bestPct: number }> = {};
 
   if (userId) {
     const [progressRows, testResults] = await Promise.all([
@@ -72,9 +72,9 @@ export default async function CoursListPage() {
           Chapitres disponibles
         </h1>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-text-muted">
-          Parcourez les chapitres disponibles.
+          Parcourez les chapitres d&rsquo;oncologie gynécologique et mammaire.
           Chaque chapitre contient un cours, des fiches de révision
-          et des QCM interactifs — Faculté de Médecine de Tunis.
+          et des QCM interactifs — Learn Oncogyn.
         </p>
       </div>
 
